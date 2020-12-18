@@ -1,0 +1,60 @@
+@model Message
+
+<div class="jumbotron">
+    <h1>Welcome to TheWall</h1>
+</div>
+
+<a href="/logout" class="btn-outline-info">Logout</a>
+
+<div class="card mb-4">
+    <div class="card-header bg-info text-white">Post A New Message</div>
+    <div class="card-body">
+        <form action="/message" method="post">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input asp-for="Content" class="form-control"/>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-outline-info" value="Post">
+        </form>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-info text-white">Messages in Forum</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul style="list-style=type:circle">
+                        @foreach( var c in ViewBag.Messages)
+                        {
+                            <li>@c.CreatedAt
+                                @c.Creator.FirstName @c.Creator.LastName
+                                @c.Content
+                            @if(c.Creator.UserId == ViewBag.User.UserId)
+                                { 
+                                    <a href="/delete/message/@c.MessageId" class="btn btn-outline-warning">Delete</a>
+                                } 
+                            </li>
+                            @foreach( var p in c.Comments)
+                            {
+                                <li>@p.CreatedAt
+                                    @p.Writer.FirstName @p.Writer.LastName
+                                    @p.CContent
+                                </li>
+                                @if(p.Writer.UserId == ViewBag.User.UserId)
+                                {
+                                    <a href="/delete/comment/@p.CommentId" class="btn btn-outline-warning">Delete</a>            
+                                }
+                            }
+                            <partial name="_Comment" model="new Comment(){MessageId = @c.MessageId, UserId = @ViewBag.User.UserId}"/>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

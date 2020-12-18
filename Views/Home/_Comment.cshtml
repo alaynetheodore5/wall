@@ -1,0 +1,16 @@
+@model Comment
+
+<form action="/comment" method="post">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Post a Comment:</label>
+                <input asp-for="CContent" class="form-control"/>
+                <span asp-validation-for="CContent" class="text-danger"></span>
+                <input type="hidden" asp-for="MessageId" value="@Model.MessageId">
+                <input type="hidden" asp-for="UserId" value="@Model.UserId">
+            </div>
+        </div>
+    </div>
+    <input type="submit" class="btn btn-outline-info" value="Post Comment">
+</form>
